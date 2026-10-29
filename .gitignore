@@ -4,4 +4,4 @@ simplescalar/sysprobe
 simplescalar/sim-*
 !simplescalar/sim-*.c
 !simplescalar/sim-*.h
-results/
+/results/
