@@ -1,6 +1,15 @@
 # SimpleScalar
 
-SimpleScalar의 out-of-order 시뮬레이터(**simplescalar/sim-outorder.c**)를 여러 프로그램을 동시에 실행하는 SMT(Simultaneous Multithreading) 시뮬레이터로 확장합니다.
+CPU 시뮬레이터 SimpleScalar를 이용해 Term Project를 진행하기 위한 저장소입니다.
+
+- **simplescalar/** — 시뮬레이터 소스. 과제에서는 out-of-order 시뮬레이터인 `sim-outorder`를 사용합니다.
+- **spec_alpha/** — 시뮬레이터 위에서 실행할 SPEC CPU 벤치마크(Alpha 바이너리)와 입력 파일
+- **run.sh** — 벤치마크 실행 스크립트
+
+Term Project는 두 단계로 나뉩니다.
+
+- **Project 1: SimpleScalar 101 with Cache Simulation** — 시뮬레이터에 익숙해지는 단계입니다. config를 바꿔가며 시뮬레이터를 돌려보고, 코드가 어떻게 동작하는지 이해합니다. 
+- **Project 2: SMT Implementation on SimpleScalar** — Project 1에서 쌓은 이해를 바탕으로, 수업에서 배운 SMT를 시뮬레이터에 구현합니다.
 
 ## 빌드
 
@@ -25,9 +34,9 @@ chmod +x run.sh   # 실행 권한이 없는 경우
 - config 파일은 **simplescalar/config/** 에서 찾습니다. 필요한 config 파일은 직접 작성해야 합니다.
 - 워크로드가 둘 이상이면 run.sh는 각 프로그램의 명령줄을 구분자 `--`로 이어 붙여 sim-outorder에 전달합니다.
 
-## 구현 가이드
+## Implementation Guide for Project 2
 
-SMT를 구현하면서 반드시 살펴봐야 하는 코드 위치입니다. 설계(정적/동적 분할, fetch policy 등)는 자유롭게 선택하면 됩니다.
+Project 2에서는 SimpleScalar의 out-of-order 시뮬레이터(**simplescalar/sim-outorder.c**)를 여러 프로그램을 동시에 실행하는 SMT(Simultaneous Multithreading) 시뮬레이터로 확장합니다. 아래는 구현하면서 반드시 살펴봐야 하는 코드 위치입니다. 설계(정적/동적 분할, fetch policy 등)는 자유롭게 선택하면 됩니다.
 
 ### 1. 프로그램 입력과 로드
 - 시뮬레이터는 `--`를 해석하지 않습니다. **main.c**에서 옵션 파싱이 끝난 위치(*exec_index*)부터 argv 끝까지가 통째로 첫 번째 프로그램의 인자로 *sim_load_prog()* (**sim-outorder.c**)에 전달됩니다. 이 구간을 프로그램별로 나누어 각각 로드하는 코드를 추가해야 합니다.  
